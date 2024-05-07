@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm/utils/utiles.dart';
+import 'package:mvvm/view/auth_view_model/authViewModel.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -7,7 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ValueNotifier<bool> obsecurePassword = ValueNotifier(true);
-
+    final AuthViewModel authViewModel = Provider.of<AuthViewModel>(context);
     TextEditingController emailController = TextEditingController();
     TextEditingController passWordController = TextEditingController();
 
@@ -53,7 +55,17 @@ class LoginScreen extends StatelessWidget {
                         labelText: 'Passwords',
                         hintText: 'Passwords'),
                   );
-                })
+                }),
+            ElevatedButton(
+                onPressed: () {
+                  Map data = {
+                    'email': emailController.text.toString(),
+                    'password': passWordController.text.toString()
+                  };
+
+                  authViewModel.loginApi(data);
+                },
+                child: const Text("login "))
           ],
         ),
       ),
